@@ -21,9 +21,9 @@ def boostrap_sample(data, compute_stat, n_bootstrap=1000):
     Raises
     ------
     ValueError
-        If data is empty, n_bootstrap < 1, or data has wrong shape
+        If data is not 2-dimensional or has wrong shape, n_bootstrap < 1
     TypeError
-        If compute_stat is not callable
+        If compute_stat is not callable, n_bootstrap is not integer, data is not array-like
     
 
     Example
@@ -31,6 +31,37 @@ def boostrap_sample(data, compute_stat, n_bootstrap=1000):
     TBA
 
     """
+
+    if callable(compute_stat) == False:
+        raise TypeError(f"compute_stat must be callable, recieved {type(compute_stat)}")
+    
+    if isinstance(n_bootstrap, int) == False:
+        raise TypeError(f"n_bootstrap must be an integrer, received {type(n_bootstrap)}") 
+    if n_bootstrap < 1:
+        raise ValueError(f"Requires n_bootstrap > 1, recieved n_bootstrap = {n_bootstrap}")
+    
+    try:   
+        data_array = np.asarray(data)
+    except Exception as error:
+        raise TypeError("data must be array-like")
+
+    if data_array.ndim != 2:
+        raise ValueError(f"data must be 2-dimensional, but has {data_array.ndim} dimensions")
+    if data_array.shape[0] < 1:
+        raise ValueError(f"data must have at least one observation, but has {data_array.shape[0]}")
+    if data_array.shape[1] != 2:
+        raise ValueError(f"data must have exatly 2 columns, but has {data_array.shape[1]}")
+
+    sample_size = len(data)
+    bootstrap_stats = [] 
+
+    for i in range(n_bootstrap):
+     bootstrap_indices = np.random.choice(data, size=sample_size, replace=True)
+     bootstrap_stats.append(compute_stat(data[bootstrap_indices]))
+
+    return bootstrap_stats
+    
+
 
 def boostrap_ci(boostrap_Stats, alpha = 0.05):
     """
@@ -60,23 +91,23 @@ def boostrap_ci(boostrap_Stats, alpha = 0.05):
 
     """
 
-    def r_squared(data):
-        """
-        Calculates R^2 from a linear regression
+def r_squared(data):
+    """
+    Calculates R^2 from a linear regression
 
-        Parameters
-        ----------
-        data : array-like, shape (n, 2)
-            Data with columns [x, y]
+    Parameters
+    ----------
+    data : array-like, shape (n, 2)
+        Data with columns [x, y]
 
-        Returns
-        -------
-        float
-            R-squared value between 0 and 1
+    Returns
+    -------
+    float
+        R-squared value between 0 and 1
 
-        Raises
-        ------
-        ValueError
-            If data does not have exactly 2 columns or < 2 rows
+    Raises
+    ------
+    ValueError
+        If data does not have exactly 2 columns or < 2 rows
 
-        """
+    """
