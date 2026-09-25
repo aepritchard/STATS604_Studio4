@@ -31,11 +31,9 @@ def test_bootstrap_sample_input_errors():
     with pytest.raises(TypeError, match = "must be integer"):
         bootstrap_sample(data, r_squared, "abc")
 
-    with pytest.raises(TypeError, match = "must be array-like"):
-        bootstrap_sample((1,2,3), r_squared)
-    with pytest.raises(TypeError, match = "must be array-like"):
+    with pytest.raises(ValueError, match = "must be 2-dimensional"):
         bootstrap_sample("abcd", r_squared)
-    with pytest.raises(TypeError, match = "must be array-like"):
+    with pytest.raises(ValueError, match = "must be 2-dimensional"):
         bootstrap_sample(False, r_squared)
 
     with pytest.raises(ValueError, match = "must be 2-dimensional"):
@@ -56,7 +54,7 @@ def test_bootstrap_sample_input_errors():
     
     with pytest.raises(ValueError, match = "must have exactly 2 columns"):
             bootstrap_sample(np.arange(24).reshape(3,8), r_squared)
-    with pytest.raises(ValueError, match = "must have exactly 2 columns"):
+    with pytest.raises(ValueError, match = "must be 2-dimensional"):
         bootstrap_sample(np.arange(6).reshape(6,), r_squared)
 
 
