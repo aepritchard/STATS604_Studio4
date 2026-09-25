@@ -108,7 +108,7 @@ def r_squared(data):
     Raises
     ------
     ValueError
-        If data does not have exactly 2 columns or < 2 rows
+        If data is not array like, or does not have exactly 2 columns or < 2 rows
 
     Example
     -------
