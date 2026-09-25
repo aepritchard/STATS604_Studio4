@@ -17,7 +17,7 @@ def test_theoretical_validity():
     x = np.random.randn(n)
     y = np.random.randn(n)
 
-    n_test = int(1e3)
+    n_test = int(1e4)
 
     (lower_bound, upper_bound) = bootstrap_ci(bootstrap_sample(data = np.column_stack((x,y)), 
                                                                compute_stat = r_squared, 
