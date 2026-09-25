@@ -63,13 +63,13 @@ def boostrap_sample(data, compute_stat, n_bootstrap=1000):
     
 
 
-def boostrap_ci(boostrap_Stats, alpha = 0.05):
+def bootstrap_ci(bootstrap_Stats, alpha = 0.05):
     """
     calculate a CI from bootstrap distribution
 
     Parameters
     ----------
-    boostrap_stats : numpy.ndarray
+    bootstrap_stats : numpy.ndarray
         bootstrap statisitcs from bootstrap_sample(...)
 
     alpha : float, default 0.05
@@ -87,7 +87,7 @@ def boostrap_ci(boostrap_Stats, alpha = 0.05):
 
     Example
     -------
-    TBA
+        Given a range of stats from 0-1 by 0.1, the 95% CI should be (0.025, 0.975)
 
     """
 
@@ -109,5 +109,9 @@ def r_squared(data):
     ------
     ValueError
         If data does not have exactly 2 columns or < 2 rows
+
+    Example
+    -------
+        x = [1,2,3,4,5] and y=[2,4,6,8,10] should return R-squared=1
 
     """
