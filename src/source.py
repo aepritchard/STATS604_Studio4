@@ -1,3 +1,8 @@
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+
 def boostrap_sample(data, compute_stat, n_bootstrap=1000):
     """
     Generate the bootstrap distribution of a statistic
@@ -56,7 +61,7 @@ def boostrap_sample(data, compute_stat, n_bootstrap=1000):
     bootstrap_stats = [] 
 
     for i in range(n_bootstrap):
-     bootstrap_indices = np.random.choice(data, size=sample_size, replace=True)
+     bootstrap_indices = np.random.choice(range(data.shape[0]), size=sample_size, replace=True)
      bootstrap_stats.append(compute_stat(data[bootstrap_indices]))
 
     return bootstrap_stats
@@ -91,6 +96,18 @@ def bootstrap_ci(bootstrap_Stats, alpha = 0.05):
 
     """
 
+    if alpha not in (0,1):
+        raise ValueError("alpha must be between 0 and 1")
+    if len(bootstrap_stats) == 0:
+        raise ValueError("list of bootstrap statistics cannot be empty")
+
+    lower_bound = np.quantile(bootstrap_stats,  alpha / 2)
+    upper_bound = np.quantile(bootstrap_stats, 1 - alpha / 2)
+
+    return(lower_bound, upper_bound)
+
+
+
 def r_squared(data):
     """
     Calculates R^2 from a linear regression
@@ -108,10 +125,21 @@ def r_squared(data):
     Raises
     ------
     ValueError
-        If data is not array like, or does not have exactly 2 columns or < 2 rows
-
-    Example
-    -------
-        x = [1,2,3,4,5] and y=[2,4,6,8,10] should return R-squared=1
+        If data does not have exactly 2 columns or < 2 rows
 
     """
+
+    if data.shape[1] != 2:
+        raise ValueError("data must have exactly two columns")
+    if data.shape[0] < 2:
+        raise ValueError("data must have at least two readings")
+
+    x = data[:, [0]]
+    y = data[:, [1]]
+
+    model = LinearRegression()
+    model.fit(x, y)
+
+    y_pred = model.predict(x)
+    rsqr = r2_score(y, y_pred)
+    return(rsqr)
