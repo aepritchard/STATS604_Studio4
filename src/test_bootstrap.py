@@ -1,8 +1,23 @@
 import pytest
 import numpy as np
 import pandas as pd
-from demo import calculate_correlation
-from source.py import r_squared
+from source import bootstrap_sample, bootstrap_ci, r_squared
+
+
+def test_bootstrap_sample_happy_path():
+    """
+    test base functionality
+    given two perfectly correlated vectors, their bootstrap r_squared estimates should be very close to one
+    """
+    v1 = np.arange(20)
+    v2 = 3*v1
+    data = np.column_stack(v1, v2)
+
+    bootstrap_stats = bootstrap_sample(data, r_squared, 10)
+    assert(all(bootstrap_stats - 1) < 0.05)
+
+
+
 
 def test_bootstrap_sample_input_errors():
     data = np.array([[1,2],[2,3.9],[3,5.8]])

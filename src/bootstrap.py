@@ -96,7 +96,7 @@ def bootstrap_ci(bootstrap_stats, alpha = 0.05):
 
     """
 
-    if alpha not in (0,1):
+    if alpha <= 0 or alpha >= 1:
         raise ValueError("alpha must be between 0 and 1")
     if len(bootstrap_stats) == 0:
         raise ValueError("list of bootstrap statistics cannot be empty")
