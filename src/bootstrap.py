@@ -41,7 +41,7 @@ def boostrap_sample(data, compute_stat, n_bootstrap=1000):
         raise TypeError(f"compute_stat must be callable, recieved {type(compute_stat)}")
     
     if isinstance(n_bootstrap, int) == False:
-        raise TypeError(f"n_bootstrap must be an integrer, received {type(n_bootstrap)}") 
+        raise TypeError(f"n_bootstrap must be integer, received {type(n_bootstrap)}") 
     if n_bootstrap < 1:
         raise ValueError(f"Requires n_bootstrap > 1, recieved n_bootstrap = {n_bootstrap}")
     

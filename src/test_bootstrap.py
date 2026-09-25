@@ -2,6 +2,50 @@ import pytest
 import numpy as np
 import pandas as pd
 from demo import calculate_correlation
+from source.py import r_squared
+
+def test_bootstrap_sample_input_errors():
+    data = np.array([[1,2],[2,3.9],[3,5.8]])
+    with pytest.raises(TypeError, match = "must be callable"):
+        bootstrap_sample(data, "add")
+    with pytest.raises(TypeError, match = "must be callable"):
+        bootstrap_sample(data, [5,3,2])
+    with pytest.raises(TypeError, match = "must be callable"):
+        bootstrap_sample(data, True)
+
+    with pytest.raises(TypeError, match = "must be integer"):
+        bootstrap_sample(data, r_squared, 3.2)
+    with pytest.raises(TypeError, match = "must be integer"):
+        bootstrap_sample(data, r_squared, "abc")
+
+    with pytest.raises(TypeError, match = "must be array-like"):
+        bootstrap_sample((1,2,3), r_squared)
+    with pytest.raises(TypeError, match = "must be array-like"):
+        bootstrap_sample("abcd", r_squared)
+    with pytest.raises(TypeError, match = "must be array-like"):
+        bootstrap_sample(False, r_squared)
+
+    with pytest.raise(ValueError, match = "must be 2-dimensional"):
+        bootstrap_sample((1,2,3), r_squared)
+    with pytest.raise(ValueError, match = "must be 2-dimensional"):
+        bootstrap_sample(np.arange(24).reshape(2,3,4), r_squared)
+    with pytest.raise(ValueError, match = "must be 2-dimensional"):
+        bootstrap_sample(np.arange(24).reshape(1,2,3,4), r_squared)
+
+    with pytest.raise(ValueError, match = "must have at least one observation"):
+        bootstrap_sample(pd.DataFrame(columns = ['x', 'y']), r_squared)
+    with pytest.raise(ValueError, match = "must have at least one observation"):
+            bootstrap_sample(pd.DataFrame(columns = ['a', 'b', 'c']), r_squared)
+        
+    
+    with pytest.raise(ValueError, match = "must have exactly 2 columns"):
+            bootstrap_sample(np.arange(24).reshape(4,6), r_squared)
+    
+    with pytest.raise(ValueError, match = "must have exactly 2 columns"):
+            bootstrap_sample(np.arange(24).reshape(3,8), r_squared)
+    with pytest.raise(ValueError, match = "must have exactly 2 columns"):
+        bootstrap_sample(np.arange(6).reshape(6,), r_squared)
+
 
 def test_bootstrapCI_happy_path():
     """
@@ -48,3 +92,4 @@ def test_r_squared_input_errors():
         r_squared(data=np.column_stack([1], [2]))
     with pytest.raises(ValueError, match=""):
         r_squared(data=np.column_stack([1,1,1], [2,2,2], [3,3,3]))
+
