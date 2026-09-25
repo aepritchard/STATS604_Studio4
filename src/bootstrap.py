@@ -55,7 +55,7 @@ def bootstrap_sample(data, compute_stat, n_bootstrap=1000):
     if data_array.shape[0] < 1:
         raise ValueError(f"data must have at least one observation, but has {data_array.shape[0]}")
     if data_array.shape[1] != 2:
-        raise ValueError(f"data must have exatly 2 columns, but has {data_array.shape[1]}")
+        raise ValueError(f"data must have exactly 2 columns, but has {data_array.shape[1]}")
 
     sample_size = len(data)
     bootstrap_stats = [] 
