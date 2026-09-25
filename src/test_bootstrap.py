@@ -11,12 +11,10 @@ def test_bootstrap_sample_happy_path():
     """
     v1 = np.arange(20)
     v2 = 3*v1
-    data = np.column_stack(v1, v2)
+    data = np.column_stack((v1, v2))
 
     bootstrap_stats = bootstrap_sample(data, r_squared, 10)
-    assert(all(bootstrap_stats - 1) < 0.05)
-
-
+    assert(all([x - 1 for x in bootstrap_stats]) < 1e-6)
 
 
 def test_bootstrap_sample_input_errors():
