@@ -1,8 +1,34 @@
 import pytest
 import numpy as np
 import pandas as pd
+from scipy.stats import beta
 from bootstrap import bootstrap_sample, bootstrap_ci, r_squared
 
+
+def test_theoretical_validity():
+    """
+    
+    test the r_squared functionality under the null hypothesis
+    when data are randomly sampled, the theoretical r_squared follows a beta distribution $ r^2 ~ beta(k/2, n-k-1 / 2) $ 
+    where k is the number of covariates and n is the number of data points
+    """
+    n = int(5e2)
+    k = 1
+    x = np.random.randn(n)
+    y = np.random.randn(n)
+
+    n_test = int(1e3)
+
+    (lower_bound, upper_bound) = bootstrap_ci(bootstrap_sample(data = np.column_stack((x,y)), 
+                                                               compute_stat = r_squared, 
+                                                               n_bootstrap = n_test))
+    
+
+    (l_beta, r_beta) = beta.ppf([0.025, 0.975], k/2, (n-k-1) / 2)
+
+    assert(abs(lower_bound - l_beta) < 1e-2)
+    assert(abs(upper_bound - r_beta) < 1e-2)
+    
 
 def test_bootstrap_sample_happy_path():
     """

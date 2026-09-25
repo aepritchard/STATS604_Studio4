@@ -61,7 +61,7 @@ def bootstrap_sample(data, compute_stat, n_bootstrap=1000):
     bootstrap_stats = [] 
 
     for i in range(n_bootstrap):
-     bootstrap_indices = np.random.choice(range(data.shape[0]), size=sample_size, replace=True)
+     bootstrap_indices = np.random.choice(range(sample_size), size=sample_size, replace=True)
      bootstrap_stats.append(compute_stat(data[bootstrap_indices]))
 
     return bootstrap_stats
