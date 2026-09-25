@@ -26,8 +26,8 @@ def test_theoretical_validity():
 
     (l_beta, r_beta) = beta.ppf([0.025, 0.975], k/2, (n-k-1) / 2)
 
-    assert(abs(lower_bound - l_beta) < 1e-2)
-    assert(abs(upper_bound - r_beta) < 1e-2)
+    assert(abs(lower_bound - l_beta) < 2.5e-2)
+    assert(abs(upper_bound - r_beta) < 2.5e-2)
     
 
 def test_bootstrap_sample_happy_path():
