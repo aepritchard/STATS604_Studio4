@@ -103,4 +103,20 @@ def test_r_squared_input_errors():
         r_squared(data=np.column_stack(([1], [2])))
     with pytest.raises(ValueError, match="data must have exactly two columns"):
         r_squared(data=np.column_stack(([1,1,1], [2,2,2], [3,3,3])))
+        
+def test_integration():
+    """
+    Tests if all functions can work together
+    """
 
+    random_generator = np.random.default_rng(seed=604)
+    X = random_generator.normal(loc=0, scale=1, size=100)
+    Y = 2*X + random_generator.normal(loc=0, scale=2, size=100)
+    data = np.column_stack((X, Y))
+    bootstrap_stats = bootstrap_sample(data=data, compute_stat=r_squared, n_bootstrap=1000)
+    bootstrap_CI = bootstrap_ci(bootstrap_stats=bootstrap_stats)
+
+    data_r_squared = r_squared(data)
+
+    assert len(bootstrap_stats) == 1000
+    assert 0 <= bootstrap_CI[0] <= data_r_squared <= bootstrap_CI[1] <= 1
