@@ -128,6 +128,9 @@ def r_squared(data):
         If data does not have exactly 2 columns or < 2 rows
 
     """
+
+    data = np.asarray(data)
+
     if len(data.shape) != 2:
             raise ValueError(f"data must be 2-dimensional")
     if data.shape[1] != 2:
