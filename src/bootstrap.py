@@ -3,7 +3,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
 
-def boostrap_sample(data, compute_stat, n_bootstrap=1000):
+def bootstrap_sample(data, compute_stat, n_bootstrap=1000):
     """
     Generate the bootstrap distribution of a statistic
 

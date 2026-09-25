@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import pandas as pd
-from source import bootstrap_sample, bootstrap_ci, r_squared
+from bootstrap import bootstrap_sample, bootstrap_ci, r_squared
 
 
 def test_bootstrap_sample_happy_path():
@@ -40,25 +40,25 @@ def test_bootstrap_sample_input_errors():
     with pytest.raises(TypeError, match = "must be array-like"):
         bootstrap_sample(False, r_squared)
 
-    with pytest.raise(ValueError, match = "must be 2-dimensional"):
+    with pytest.raises(ValueError, match = "must be 2-dimensional"):
         bootstrap_sample((1,2,3), r_squared)
-    with pytest.raise(ValueError, match = "must be 2-dimensional"):
+    with pytest.raises(ValueError, match = "must be 2-dimensional"):
         bootstrap_sample(np.arange(24).reshape(2,3,4), r_squared)
-    with pytest.raise(ValueError, match = "must be 2-dimensional"):
+    with pytest.raises(ValueError, match = "must be 2-dimensional"):
         bootstrap_sample(np.arange(24).reshape(1,2,3,4), r_squared)
 
-    with pytest.raise(ValueError, match = "must have at least one observation"):
+    with pytest.raises(ValueError, match = "must have at least one observation"):
         bootstrap_sample(pd.DataFrame(columns = ['x', 'y']), r_squared)
-    with pytest.raise(ValueError, match = "must have at least one observation"):
+    with pytest.raises(ValueError, match = "must have at least one observation"):
             bootstrap_sample(pd.DataFrame(columns = ['a', 'b', 'c']), r_squared)
         
     
-    with pytest.raise(ValueError, match = "must have exactly 2 columns"):
+    with pytest.raises(ValueError, match = "must have exactly 2 columns"):
             bootstrap_sample(np.arange(24).reshape(4,6), r_squared)
     
-    with pytest.raise(ValueError, match = "must have exactly 2 columns"):
+    with pytest.raises(ValueError, match = "must have exactly 2 columns"):
             bootstrap_sample(np.arange(24).reshape(3,8), r_squared)
-    with pytest.raise(ValueError, match = "must have exactly 2 columns"):
+    with pytest.raises(ValueError, match = "must have exactly 2 columns"):
         bootstrap_sample(np.arange(6).reshape(6,), r_squared)
 
 
