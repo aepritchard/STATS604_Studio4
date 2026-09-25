@@ -68,7 +68,7 @@ def boostrap_sample(data, compute_stat, n_bootstrap=1000):
     
 
 
-def bootstrap_ci(bootstrap_Stats, alpha = 0.05):
+def bootstrap_ci(bootstrap_stats, alpha = 0.05):
     """
     calculate a CI from bootstrap distribution
 
